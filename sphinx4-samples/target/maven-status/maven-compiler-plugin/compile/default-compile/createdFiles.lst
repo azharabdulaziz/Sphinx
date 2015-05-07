@@ -1,0 +1,6 @@
+edu/cmu/sphinx/demo/DemoRunner.class
+edu/cmu/sphinx/demo/allphone/AllphoneDemo.class
+edu/cmu/sphinx/demo/dialog/DialogDemo.class
+edu/cmu/sphinx/demo/aligner/AlignerDemo.class
+edu/cmu/sphinx/demo/speakerid/SpeakerIdentificationDemo.class
+edu/cmu/sphinx/demo/transcriber/TranscriberDemo.class
