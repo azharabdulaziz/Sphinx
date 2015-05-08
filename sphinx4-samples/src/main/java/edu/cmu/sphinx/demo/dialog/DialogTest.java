@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,28 +15,31 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 
 import javax.swing.JList;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 public class DialogTest extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private ArrayList<String> wordlist = new ArrayList<String>();
+	private List<String> wordHistory = new ArrayList<String>();
 	
 	private static final String ACOUSTIC_MODEL =
 			"resource:/edu/cmu/sphinx/models/en-us/en-us";
 	//    private static final String DICTIONARY_PATH =
 	//        "resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict";
 	private static final String DICTIONARY_PATH =
-			"resource:/edu/cmu/sphinx/models/en-us/test.dict";
+			"resource:/edu/cmu/sphinx/models/en-us/6073.dic";
 	//private static final String GRAMMAR_PATH =
 	//    "resource:/edu/cmu/sphinx/demo/dialog/";
 	private static final String LANGUAGE_MODEL =
-			"resource:/edu/cmu/sphinx/models/en-us/en-us.lm.dmp";
+			"resource:/edu/cmu/sphinx/models/en-us/model.dmp";
 
 	private static Configuration configuration = new Configuration();
 	
 	private static String what = "";
-	private JList list;
+	private JList dictList;
 	
 	
 	public static void sleep(int millis) {
@@ -58,7 +62,7 @@ public class DialogTest extends JFrame {
 			wordlist.add(line);
 		}
 	 
-		list.setListData(wordlist.toArray());
+		dictList.setListData(wordlist.toArray());
 		br.close();
 	}
 	
@@ -99,11 +103,21 @@ public class DialogTest extends JFrame {
 		panel.add(textField);
 		textField.setColumns(10);
 		
-		list = new JList();
-		list.setBounds(6, 6, 161, 256);
-		panel.add(list);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 6, 161, 256);
+		panel.add(scrollPane);
+		
+		dictList = new JList();
+		scrollPane.setViewportView(dictList);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(271, 53, 151, 199);
+		panel.add(scrollPane_1);
+		
+		final JList spokenList = new JList();
+		scrollPane_1.setViewportView(spokenList);
 		try {
-			readFile(new File("/Users/joefiala/Documents/workspace/sphinx4-5prealpha-src/sphinx4-data/src/main/resources/edu/cmu/sphinx/models/en-us/test.dict"));
+			readFile(new File("../sphinx4-data/src/main/resources/edu/cmu/sphinx/models/en-us/6073.dic"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -131,6 +145,8 @@ public class DialogTest extends JFrame {
 						}
 						//System.out.println(utterance);
 						what = utterance;
+						wordHistory.add(0, what);
+						spokenList.setListData(wordHistory.toArray());
 						//System.out.println(what);
 						textField.setText(what);
 					}
